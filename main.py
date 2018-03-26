@@ -6,25 +6,30 @@
 
 from __future__ import division
 from argparse import ArgumentParser
-from ORM.coin import Coin
+
+from model.modelGenerator import Model
+from tools.config_loader import ConfigLoader
 
 def parser_builder():
     parser=ArgumentParser()
-    parser.add_argument("--test",
-                        dest="mode",
-                        default="test1")
-    parser.add_argument("--process",
+    parser.add_argument("--mode",
                         dest="mode")
+    parser.add_argument("--process",
+                        dest="process")
     return parser
 
 def main():
     parser=parser_builder()
     option=parser.parse_args()
-    if option.mode == 'dataPreprocessing':
-        dataPreprocessing()
+    configLoader=ConfigLoader()
+    config=configLoader.load_config()
+    if option.process == 'generate_model':
+        modelGeneration(config)
 
-def test():
-    pass
+def modelGeneration(config):
+    print('model is generating...')
+    model=Model(config)
+    model=model.generateModel()
 
 '''
 Download the data matrix from external resourses
